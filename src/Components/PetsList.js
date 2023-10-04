@@ -1,26 +1,32 @@
 import { useState } from "react";
 import pets from "../petsData";
 import PetItem from "./PetItem";
+import Selector from "./Selector";
+import Searchbar from "./Searchbar";
 
-function PetsList() {
+const PetsList = ({ pets }) => {
   const [query, setQuery] = useState("");
-  const searchBar = (event) => {
-    setQuery(event.target.value);
-  };
-
   const [type, setType] = useState("");
-  const selector = (event) => {
-    setType(event.target.value);
-  };
 
-  const petList = pets
-    .filter((pet) => {
-      return pet.name.toLocaleLowerCase().includes(query.toLocaleLowerCase());
-    })
-    .filter((pet) => {
-      return pet.type.includes(type);
-    })
-    .map((pet) => <PetItem pet={pet} key={pet.id} />);
+  const filteredPetsList = pets.filter((pet) => {
+    return (
+      pet.name.toLocaleLowerCase().includes(query.toLowerCase()) &&
+      (type === "" ||
+        pet.type.toLocaleLowerCase().includes(type.toLocaleLowerCase()))
+    );
+  });
+
+  const petsListAfterMap = filteredPetsList.map((pet) => (
+    <PetItem pet={pet} key={pet.id} />
+  ));
+
+  // const filterPetsByName = pets.filter((pet)=>{
+  //   pet.name.toLocaleLowerCase().includes(query.toLocaleLowerCase())
+  // }).map((pet) => <PetItem pet={pet} key={pet.id} />);
+
+  // const filterPetsByType = pets.filter((pet)=>{
+  //   pet.type.toLocaleLowerCase().includes(type.toLocaleLowerCase())
+  // }).map((pet) => <PetItem pet={pet} key={pet.id} />);
 
   return (
     <section id="doctors" className="doctor-section pt-140">
@@ -32,33 +38,20 @@ function PetsList() {
                 Fur-ends
               </h1>
               <div className="input-group rounded">
-                <input
-                  onChange={searchBar}
-                  type="search"
-                  className="form-control rounded"
-                  placeholder="Search"
-                  aria-label="Search"
-                  aria-describedby="search-addon"
-                />
+                <Searchbar query={query} setQuery={setQuery} />
               </div>
               <br />
               Type:
-              <select onChange={selector} className="form-select">
-                <option value="" selected>
-                  All
-                </option>
-                <option value="Cat">Cat</option>
-                <option value="Dog">Dog</option>
-                <option value="Rabbit">Rabbit</option>
-              </select>
+              <Selector type={type} setType={setType} />
+              {petsListAfterMap}
             </div>
           </div>
         </div>
 
-        <div className="row justify-content-center">{petList}</div>
+        <div className="row justify-content-center">{PetsList}</div>
       </div>
     </section>
   );
-}
+};
 
 export default PetsList;
