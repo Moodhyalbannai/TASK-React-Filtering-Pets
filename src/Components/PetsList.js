@@ -4,7 +4,7 @@ import PetItem from "./PetItem";
 import Selector from "./Selector";
 import Searchbar from "./Searchbar";
 
-const PetsList = ({ pets }) => {
+const PetsList = () => {
   const [query, setQuery] = useState("");
   const [type, setType] = useState("");
 
@@ -19,14 +19,6 @@ const PetsList = ({ pets }) => {
   const petsListAfterMap = filteredPetsList.map((pet) => (
     <PetItem pet={pet} key={pet.id} />
   ));
-
-  // const filterPetsByName = pets.filter((pet)=>{
-  //   pet.name.toLocaleLowerCase().includes(query.toLocaleLowerCase())
-  // }).map((pet) => <PetItem pet={pet} key={pet.id} />);
-
-  // const filterPetsByType = pets.filter((pet)=>{
-  //   pet.type.toLocaleLowerCase().includes(type.toLocaleLowerCase())
-  // }).map((pet) => <PetItem pet={pet} key={pet.id} />);
 
   return (
     <section id="doctors" className="doctor-section pt-140">
@@ -43,12 +35,11 @@ const PetsList = ({ pets }) => {
               <br />
               Type:
               <Selector type={type} setType={setType} />
-              {petsListAfterMap}
             </div>
           </div>
         </div>
 
-        <div className="row justify-content-center">{PetsList}</div>
+        <div className="row justify-content-center"> {petsListAfterMap}</div>
       </div>
     </section>
   );
